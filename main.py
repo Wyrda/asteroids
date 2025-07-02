@@ -1,7 +1,20 @@
 import pygame
 from constants import *
 from player import Player
+from asteroid import Asteroid
 from circleshape import CircleShape
+from asteroidfield import AsteroidField
+
+
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+asteroids = pygame.sprite.Group()
+#asteroidfield = pygame.sprite.Group()
+
+CircleShape.containers = (updatable, drawable)
+Player.containers = (updatable, drawable)
+Asteroid.containers = (updatable, drawable, asteroids)
+AsteroidField.containers = (updatable,)
 
 def main():
     print("Starting Asteroids!")
@@ -9,20 +22,12 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
 
     pygame.init()
+    
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-
-    updatable = pygame.sprite.Group()
-    drawable = pygame.sprite.Group()
-
-    CircleShape.containers = (updatable, drawable)
-    Player.containers = (updatable, drawable)
-
     player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, updatable, drawable)
-
+    field = AsteroidField(updatable, drawable, asteroids)
     dt = 0
     clock = pygame.time.Clock()
-
 
     running = True
     while running:
