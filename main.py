@@ -57,7 +57,7 @@ def main():
                 if bullet.collition(asteroid):
                     print("Asteroid hit!")
                     bullet.kill()
-                    asteroid.kill()
+                    asteroid.split()
                     break
 
         pygame.display.flip()
