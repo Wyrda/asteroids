@@ -4,7 +4,7 @@ from player import Player
 from asteroid import Asteroid
 from circleshape import CircleShape, Shot
 from asteroidfield import AsteroidField
-
+from counter import Counter
 
 updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
@@ -18,13 +18,18 @@ Asteroid.containers = (updatable, drawable, asteroids)
 AsteroidField.containers = (updatable,)
 Shot.containers = (updatable, drawable, bullets)
 
+game_score_counter = None
+
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
     pygame.init()
+    pygame.font.init()
 
+    global game_score_counter
+    game_score_counter = Counter(10, 10, 36, (255, 255, 255), updatable, drawable)
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, updatable, drawable)
@@ -58,6 +63,8 @@ def main():
                     print("Asteroid hit!")
                     bullet.kill()
                     asteroid.split()
+                    if game_score_counter:
+                        game_score_counter.increment()
                     break
 
         pygame.display.flip()
